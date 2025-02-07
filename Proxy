@@ -1,0 +1,39 @@
+from abc import ABC, abstractmethod
+
+# Interface Subject
+class Database(ABC):
+    @abstractmethod
+    def query(self, sql):
+        pass
+
+# RealSubject - Objeto real que realiza a consulta
+class RealDatabase(Database):
+    def query(self, sql):
+        return f"Resultado da consulta: {sql}"
+
+# Proxy - Controla o acesso ao RealDatabase
+class DatabaseProxy(Database):
+    def __init__(self, user):
+        self.user = user
+        self.real_database = RealDatabase()
+
+    def query(self, sql):
+        if self._has_access():
+            print(f"Acesso concedido para {self.user}")
+            return self.real_database.query(sql)
+        else:
+            return f"Acesso negado para {self.user}"
+
+    def _has_access(self):
+        # Simulando uma verificação de permissão simples
+        return self.user == "admin"
+
+# Uso do padrão Proxy
+if __name__ == "__main__":
+    # Usuário com permissão
+    proxy_admin = DatabaseProxy("admin")
+    print(proxy_admin.query("SELECT * FROM users"))
+
+    # Usuário sem permissão
+    proxy_guest = DatabaseProxy("guest")
+    print(proxy_guest.query("SELECT * FROM users"))
