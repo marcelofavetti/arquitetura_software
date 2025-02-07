@@ -1,0 +1,84 @@
+# Produto final
+class Sanduiche:
+    def __init__(self):
+        self.pao = None
+        self.recheio = None
+        self.vegetais = []
+        self.molho = None
+
+    def __str__(self):
+        return f"Sanduíche com pão {self.pao}, recheio de {self.recheio}, vegetais {', '.join(self.vegetais)}, e molho {self.molho}."
+
+# Builder abstrato
+class SanduicheBuilder:
+    def __init__(self):
+        self.sanduiche = Sanduiche()
+
+    def adicionar_pao(self):
+        pass
+
+    def adicionar_recheio(self):
+        pass
+
+    def adicionar_vegetais(self):
+        pass
+
+    def adicionar_molho(self):
+        pass
+
+    def get_sanduiche(self):
+        return self.sanduiche
+
+# Builder concreto para um sanduíche vegetariano
+class VegetarianoBuilder(SanduicheBuilder):
+    def adicionar_pao(self):
+        self.sanduiche.pao = "integral"
+
+    def adicionar_recheio(self):
+        self.sanduiche.recheio = "tofu"
+
+    def adicionar_vegetais(self):
+        self.sanduiche.vegetais = ["alface", "tomate", "pepino"]
+
+    def adicionar_molho(self):
+        self.sanduiche.molho = "pesto"
+
+# Builder concreto para um sanduíche de frango
+class FrangoBuilder(SanduicheBuilder):
+    def adicionar_pao(self):
+        self.sanduiche.pao = "francês"
+
+    def adicionar_recheio(self):
+        self.sanduiche.recheio = "frango grelhado"
+
+    def adicionar_vegetais(self):
+        self.sanduiche.vegetais = ["alface", "cebola"]
+
+    def adicionar_molho(self):
+        self.sanduiche.molho = "maionese"
+
+# Diretor que gerencia o processo de construção
+class Cozinha:
+    def __init__(self, builder):
+        self.builder = builder
+
+    def preparar_sanduiche(self):
+        self.builder.adicionar_pao()
+        self.builder.adicionar_recheio()
+        self.builder.adicionar_vegetais()
+        self.builder.adicionar_molho()
+        return self.builder.get_sanduiche()
+
+# Uso do padrão Builder
+if __name__ == "__main__":
+    # Construindo um sanduíche vegetariano
+    vegetariano_builder = VegetarianoBuilder()
+    cozinha = Cozinha(vegetariano_builder)
+    sanduiche_veg = cozinha.preparar_sanduiche()
+    print(sanduiche_veg)
+
+    # Construindo um sanduíche de frango
+    frango_builder = FrangoBuilder()
+    cozinha = Cozinha(frango_builder)
+    sanduiche_frango = cozinha.preparar_sanduiche()
+    print(sanduiche_frango)
