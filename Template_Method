@@ -1,0 +1,49 @@
+from abc import ABC, abstractmethod
+
+# Classe Abstrata que define o Template Method
+class Bebida(ABC):
+    def preparar(self):
+        self.ferventar_agua()
+        self.adicionar_principal()
+        self.adicionar_condimentos()
+        self.servir()
+
+    def ferventar_agua(self):
+        print("Fervendo a água...")
+
+    @abstractmethod
+    def adicionar_principal(self):
+        pass
+
+    @abstractmethod
+    def adicionar_condimentos(self):
+        pass
+
+    def servir(self):
+        print("Servindo a bebida.\n")
+
+# Subclasse para preparar Chá
+class Cha(Bebida):
+    def adicionar_principal(self):
+        print("Adicionando o saquinho de chá...")
+
+    def adicionar_condimentos(self):
+        print("Adicionando limão...")
+
+# Subclasse para preparar Café
+class Cafe(Bebida):
+    def adicionar_principal(self):
+        print("Adicionando o pó de café...")
+
+    def adicionar_condimentos(self):
+        print("Adicionando açúcar e leite...")
+
+# Uso do Template Method
+if __name__ == "__main__":
+    print("Preparando Chá:")
+    cha = Cha()
+    cha.preparar()
+
+    print("Preparando Café:")
+    cafe = Cafe()
+    cafe.preparar()
